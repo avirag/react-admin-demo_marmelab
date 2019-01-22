@@ -1,5 +1,5 @@
 import React from 'react';
-import { List, Edit, Create, Datagrid, SimpleForm, Filter } from 'react-admin';
+import { List, SimpleList, Edit, Create, Datagrid, SimpleForm, Filter, Responsive } from 'react-admin';
 import { TextField, ReferenceField, EditButton } from 'react-admin';
 import { TextInput, ReferenceInput, SelectInput, LongTextInput } from 'react-admin';
 
@@ -18,14 +18,25 @@ const PostFilter = props => (
 
 export const PostList = props  => (
   <List {...props} filters={<PostFilter />}>
-    <Datagrid>
-      <ReferenceField source="userId" reference="users">
-        <TextField source="name" />
-      </ReferenceField>
-      <TextField source="id" />
-      <TextField source="title" />
-      <EditButton />
-    </Datagrid>
+    <Responsive
+      small={
+        <SimpleList
+          primaryText={record => record.title}
+          secondaryText={record => `${record.views} views`}
+          tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
+        />
+      }
+      medium={
+        <Datagrid>
+          <ReferenceField source="userId" reference="users">
+            <TextField source="name" />
+          </ReferenceField>
+          <TextField source="id" />
+          <TextField source="title" />
+          <EditButton />
+        </Datagrid>
+      }
+    />
   </List>
 );
 
